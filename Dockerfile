@@ -63,7 +63,7 @@ EXPOSE 3000
 
 ENV PORT=3000
 
-HEALTHCHECK --interval=5s --timeout=5s --start-period=10s --retries=3 \
+HEALTHCHECK --interval=5s --timeout=5s --start-period=2s --retries=3 \
     CMD wget -q --spider http://localhost:3000/api/healthcheck || exit 1
 
 # server.js is created by next build from the standalone output
