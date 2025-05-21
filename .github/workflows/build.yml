@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository_owner }}/dotcom
+  IMAGE_NAME: muncherelli/dotcom
 
 jobs:
   build-and-push:
@@ -15,7 +15,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write
 
     steps:
       - name: checkout repository
