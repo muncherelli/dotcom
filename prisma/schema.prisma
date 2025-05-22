@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+  schemas  = ["dbo", "bear"]
+}
+
+model Note {
+  ID                          Int      @id @default(autoincrement())
+
+  @@map("Notes")
+  @@schema("dbo")
+}
+
+model BearNote {
+  Z_PK   Int     @id
+  Z_ENT  Int?
+  Z_OPT  Int?
+  ZARCHIVED Int?
+  ZENCRYPTED Int?
+  ZHASFILES Int?
+  ZHASIMAGES Int?
+  ZHASSOURCECODE Int?
+  ZLOCKED Int?
+  ZORDER Int?
+  ZPERMANENTLYDELETED Int?
+  ZPINNED Int?
+  ZSHOWNINTODAYWIDGET Int?
+  ZSKIPSYNC Int?
+  ZTODOCOMPLETED Int?
+  ZTODOINCOMPLETED Int?
+  ZTRASHED Int?
+  ZVERSION Int?
+  ZPASSWORD Int?
+  ZSERVERDATA Int?
+  ZARCHIVEDDATE Float?
+  ZCONFLICTUNIQUEIDENTIFIERDATE Float?
+  ZCREATIONDATE Float?
+  ZLOCKEDDATE Float?
+  ZMODIFICATIONDATE Float?
+  ZORDERDATE Float?
+  ZPINNEDDATE Float?
+  ZTRASHEDDATE Float?
+  ZCONFLICTUNIQUEIDENTIFIER String?
+  ZENCRYPTIONUNIQUEIDENTIFIER String?
+  ZLASTEDITINGDEVICE String?
+  ZSUBTITLE String? @db.Text
+  ZTEXT String? @db.Text
+  ZTITLE String?
+  ZUNIQUEIDENTIFIER String?
+
+  @@map("ZSFNOTE")
+  @@schema("bear")
+}

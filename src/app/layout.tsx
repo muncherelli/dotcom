@@ -30,7 +30,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "muncherelli",
+  title: "𝖒𝖚𝖓𝖈𝖍𝖊𝖗𝖊𝖑𝖑𝖎",
   description: "muncherelli",
 };
 
