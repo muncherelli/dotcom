@@ -32,7 +32,12 @@ export async function POST(request: Request) {
 
     // create a map of existing notes for quick lookup
     const existingNotesMap = new Map(
-      existingNotes.map((note) => [note.Z_PK, note.ZMODIFICATIONDATE])
+      existingNotes.map(
+        (note: { Z_PK: number; ZMODIFICATIONDATE: number | null }) => [
+          note.Z_PK,
+          note.ZMODIFICATIONDATE,
+        ]
+      )
     );
 
     // find notes that need updating (either new or modified)
