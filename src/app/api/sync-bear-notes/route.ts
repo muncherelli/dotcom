@@ -196,7 +196,7 @@ export async function POST(request: Request) {
           for (const tagName of validTagNames) {
             // find or create the tag - safely escape the tag name
             const escapedTagName = tagName.replace(/'/g, "''")
-            let tag = await tx.$queryRawUnsafe(
+            const tag = await tx.$queryRawUnsafe(
               `SELECT [ID] FROM [dbo].[Tags] WHERE [Name] = N'${escapedTagName}'`
             )
 
