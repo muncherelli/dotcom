@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/libraries/prisma";
+import matter from "gray-matter";
+import { plistDateToJSDate } from "@/lib/date-utils";
 
 export async function POST(request: Request) {
   try {
@@ -14,34 +16,129 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid API key" }, { status: 401 });
     }
 
-    // get the notes data from the request
-    const bearNotes = await request.json();
+    const notes = await request.json();
 
-    // process each note
-    for (const bearNote of bearNotes) {
-      const existingNote = await prisma.bearNote.findUnique({
-        where: { Z_PK: bearNote.Z_PK },
+    for (const note of notes) {
+      // First, upsert into bear.ZSFNOTE
+      await prisma.bearNote.upsert({
+        where: {
+          Z_PK: note.Z_PK,
+        },
+        update: {
+          Z_ENT: note.Z_ENT,
+          Z_OPT: note.Z_OPT,
+          ZARCHIVED: note.ZARCHIVED,
+          ZENCRYPTED: note.ZENCRYPTED,
+          ZHASFILES: note.ZHASFILES,
+          ZHASIMAGES: note.ZHASIMAGES,
+          ZHASSOURCECODE: note.ZHASSOURCECODE,
+          ZLOCKED: note.ZLOCKED,
+          ZORDER: note.ZORDER,
+          ZPERMANENTLYDELETED: note.ZPERMANENTLYDELETED,
+          ZPINNED: note.ZPINNED,
+          ZSHOWNINTODAYWIDGET: note.ZSHOWNINTODAYWIDGET,
+          ZSKIPSYNC: note.ZSKIPSYNC,
+          ZTODOCOMPLETED: note.ZTODOCOMPLETED,
+          ZTODOINCOMPLETED: note.ZTODOINCOMPLETED,
+          ZTRASHED: note.ZTRASHED,
+          ZVERSION: note.ZVERSION,
+          ZPASSWORD: note.ZPASSWORD,
+          ZSERVERDATA: note.ZSERVERDATA,
+          ZARCHIVEDDATE: note.ZARCHIVEDDATE,
+          ZCONFLICTUNIQUEIDENTIFIERDATE: note.ZCONFLICTUNIQUEIDENTIFIERDATE,
+          ZCREATIONDATE: note.ZCREATIONDATE,
+          ZLOCKEDDATE: note.ZLOCKEDDATE,
+          ZMODIFICATIONDATE: note.ZMODIFICATIONDATE,
+          ZORDERDATE: note.ZORDERDATE,
+          ZPINNEDDATE: note.ZPINNEDDATE,
+          ZTRASHEDDATE: note.ZTRASHEDDATE,
+          ZCONFLICTUNIQUEIDENTIFIER: note.ZCONFLICTUNIQUEIDENTIFIER,
+          ZENCRYPTIONUNIQUEIDENTIFIER: note.ZENCRYPTIONUNIQUEIDENTIFIER,
+          ZLASTEDITINGDEVICE: note.ZLASTEDITINGDEVICE,
+          ZSUBTITLE: note.ZSUBTITLE,
+          ZTEXT: note.ZTEXT,
+          ZTITLE: note.ZTITLE,
+          ZUNIQUEIDENTIFIER: note.ZUNIQUEIDENTIFIER,
+        },
+        create: {
+          Z_PK: note.Z_PK,
+          Z_ENT: note.Z_ENT,
+          Z_OPT: note.Z_OPT,
+          ZARCHIVED: note.ZARCHIVED,
+          ZENCRYPTED: note.ZENCRYPTED,
+          ZHASFILES: note.ZHASFILES,
+          ZHASIMAGES: note.ZHASIMAGES,
+          ZHASSOURCECODE: note.ZHASSOURCECODE,
+          ZLOCKED: note.ZLOCKED,
+          ZORDER: note.ZORDER,
+          ZPERMANENTLYDELETED: note.ZPERMANENTLYDELETED,
+          ZPINNED: note.ZPINNED,
+          ZSHOWNINTODAYWIDGET: note.ZSHOWNINTODAYWIDGET,
+          ZSKIPSYNC: note.ZSKIPSYNC,
+          ZTODOCOMPLETED: note.ZTODOCOMPLETED,
+          ZTODOINCOMPLETED: note.ZTODOINCOMPLETED,
+          ZTRASHED: note.ZTRASHED,
+          ZVERSION: note.ZVERSION,
+          ZPASSWORD: note.ZPASSWORD,
+          ZSERVERDATA: note.ZSERVERDATA,
+          ZARCHIVEDDATE: note.ZARCHIVEDDATE,
+          ZCONFLICTUNIQUEIDENTIFIERDATE: note.ZCONFLICTUNIQUEIDENTIFIERDATE,
+          ZCREATIONDATE: note.ZCREATIONDATE,
+          ZLOCKEDDATE: note.ZLOCKEDDATE,
+          ZMODIFICATIONDATE: note.ZMODIFICATIONDATE,
+          ZORDERDATE: note.ZORDERDATE,
+          ZPINNEDDATE: note.ZPINNEDDATE,
+          ZTRASHEDDATE: note.ZTRASHEDDATE,
+          ZCONFLICTUNIQUEIDENTIFIER: note.ZCONFLICTUNIQUEIDENTIFIER,
+          ZENCRYPTIONUNIQUEIDENTIFIER: note.ZENCRYPTIONUNIQUEIDENTIFIER,
+          ZLASTEDITINGDEVICE: note.ZLASTEDITINGDEVICE,
+          ZSUBTITLE: note.ZSUBTITLE,
+          ZTEXT: note.ZTEXT,
+          ZTITLE: note.ZTITLE,
+          ZUNIQUEIDENTIFIER: note.ZUNIQUEIDENTIFIER,
+        },
       });
 
-      if (!existingNote) {
-        // insert new note
-        await prisma.bearNote.create({
-          data: { ...bearNote },
-        });
-      } else if (
-        existingNote.ZMODIFICATIONDATE !== bearNote.ZMODIFICATIONDATE
-      ) {
-        // update existing note if modified date is different
-        await prisma.bearNote.update({
-          where: { Z_PK: bearNote.Z_PK },
-          data: { ...bearNote },
-        });
-      }
+      // Then, extract title from frontmatter or ZTITLE and upsert into dbo.Notes
+      const { data: frontMatter } = matter(note.ZTEXT || "");
+      const title = frontMatter.title || note.ZTITLE;
+
+      // Convert PLIST dates to JavaScript Date objects
+      const createdAt = plistDateToJSDate(note.ZCREATIONDATE);
+      const updatedAt = plistDateToJSDate(note.ZMODIFICATIONDATE);
+      const archivedAt = plistDateToJSDate(note.ZARCHIVEDDATE);
+      const lockedAt = plistDateToJSDate(note.ZLOCKEDDATE);
+      const pinnedAt = plistDateToJSDate(note.ZPINNEDDATE);
+      const trashedAt = plistDateToJSDate(note.ZTRASHEDDATE);
+
+      await prisma.note.upsert({
+        where: {
+          ID: note.Z_PK,
+        },
+        update: {
+          Title: title,
+          UpdatedAt: updatedAt || new Date(),
+          ArchivedAt: archivedAt,
+          LockedAt: lockedAt,
+          PinnedAt: pinnedAt,
+          TrashedAt: trashedAt,
+        },
+        create: {
+          ID: note.Z_PK,
+          Title: title,
+          CreatedAt: createdAt || new Date(),
+          UpdatedAt: updatedAt || new Date(),
+          ArchivedAt: archivedAt,
+          LockedAt: lockedAt,
+          PinnedAt: pinnedAt,
+          TrashedAt: trashedAt,
+        },
+      });
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ message: "Notes synced successfully" });
   } catch (error) {
-    console.error("Error syncing Bear notes:", error);
+    console.error("Error syncing notes:", error);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

@@ -16,7 +16,14 @@ datasource db {
 }
 
 model Note {
-  ID                          Int      @id @default(autoincrement())
+  ID                          Int      @id @map("ID")
+  CreatedAt                   DateTime @db.DateTime
+  UpdatedAt                   DateTime @db.DateTime
+  ArchivedAt                  DateTime? @db.DateTime
+  LockedAt                    DateTime? @db.DateTime
+  PinnedAt                    DateTime? @db.DateTime
+  TrashedAt                   DateTime? @db.DateTime
+  Title                       String?
 
   @@map("Notes")
   @@schema("dbo")
