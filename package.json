@@ -20,8 +20,10 @@
     "react-dom": "^19.0.0",
     "reflect-metadata": "^0.2.2",
     "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
     "remark-parse": "^11.0.0",
-    "typeorm": "^0.3.24"
+    "typeorm": "^0.3.24",
+    "unified": "^11.0.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -29,6 +31,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/vfile": "^4.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
     "prisma": "^6.8.2",

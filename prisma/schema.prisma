@@ -24,6 +24,10 @@ model Note {
   PinnedAt                    DateTime? @db.DateTime
   TrashedAt                   DateTime? @db.DateTime
   Title                       String?
+  Slug                        String?
+  Markdown                    String?  @db.Text
+  HTML                        String?  @db.Text
+  NoteTags                    NoteTag[]
 
   @@map("Notes")
   @@schema("dbo")
@@ -68,4 +72,25 @@ model BearNote {
 
   @@map("ZSFNOTE")
   @@schema("bear")
+}
+
+model Tag {
+  ID           Int       @id @default(autoincrement())
+  Name         String    @unique
+  NoteTags     NoteTag[]
+
+  @@map("Tags")
+  @@schema("dbo")
+}
+
+model NoteTag {
+  ID           Int       @id @default(autoincrement())
+  NoteID       Int
+  TagID        Int
+  Note         Note      @relation(fields: [NoteID], references: [ID], onDelete: Cascade)
+  Tag          Tag       @relation(fields: [TagID], references: [ID], onDelete: Cascade)
+
+  @@unique([NoteID, TagID])
+  @@map("NoteTags")
+  @@schema("dbo")
 }

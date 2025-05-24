@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/libraries/prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
@@ -14,12 +14,27 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid API key" }, { status: 401 });
     }
 
-    // Truncate both tables
-    await prisma.$executeRaw`TRUNCATE TABLE dbo.Notes`;
-    await prisma.$executeRaw`TRUNCATE TABLE bear.ZSFNOTE`;
+    // delete all data in proper order to respect foreign key constraints
+    await prisma.$transaction(async (tx) => {
+      // first, clear NoteTags (junction table)
+      await tx.$executeRaw`DELETE FROM dbo.NoteTags`;
+      
+      // then clear Notes table
+      await tx.$executeRaw`DELETE FROM dbo.Notes`;
+      
+      // clear Tags table
+      await tx.$executeRaw`DELETE FROM dbo.Tags`;
+      
+      // finally clear the Bear notes table
+      await tx.$executeRaw`DELETE FROM bear.ZSFNOTE`;
+      
+      // reset identity columns
+      await tx.$executeRaw`DBCC CHECKIDENT ('dbo.NoteTags', RESEED, 0)`;
+      await tx.$executeRaw`DBCC CHECKIDENT ('dbo.Tags', RESEED, 0)`;
+    });
 
     return NextResponse.json({
-      message: "Database tables truncated successfully",
+      message: "Database tables cleared and identity values reset successfully",
     });
   } catch (error) {
     console.error("Error during resync:", error);
