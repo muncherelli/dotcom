@@ -61,7 +61,7 @@ export default async function Home() {
                 {notes.map((note) => (
                   <li key={note.ID} className="border rounded-lg p-3 hover:bg-gray-50 transition-colors">
                     <Link href={`/${note.Slug}`} className="block">
-                      <h3 className="text-lg font-medium">{note.Title || 'Untitled'}</h3>
+                      <h3 className="text-lg font-medium">{note.Title || "Untitled"}</h3>
                       <p className="text-sm text-gray-500 mt-1">
                         {new Date(note.UpdatedAt).toLocaleDateString()}
                       </p>

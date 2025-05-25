@@ -1,18 +1,20 @@
-import { notFound } from 'next/navigation'
-import { prisma } from '@/lib/prisma'
-import Link from 'next/link'
+import { notFound } from "next/navigation"
+import { prisma } from "@/lib/prisma"
+import Link from "next/link"
 
-export const dynamic = 'force-dynamic' // Don't cache this page
+export const dynamic = "force-dynamic" // Don't cache this page
 
-interface SlugPageProps {
-  params: {
+// Define params as required by Next.js PageProps interface
+type SlugPageProps = {
+  params: Promise<{
     slug: string
-  }
+  }>
+  searchParams?: Promise<Record<string, string | string[] | undefined>>
 }
 
 export default async function SlugPage({ params }: SlugPageProps) {
-  // In Next.js 14, params should be awaited
-  const { slug } = await Promise.resolve(params)
+  // Await params as required by Next.js
+  const { slug } = await params
 
   // Check if this is a note
   const note = await prisma.note.findFirst({

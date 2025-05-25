@@ -12,5 +12,5 @@ export default function NotesLoading() {
         ))}
       </div>
     </div>
-  );
+  )
 }

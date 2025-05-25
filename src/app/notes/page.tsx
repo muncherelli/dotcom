@@ -39,7 +39,7 @@ export default async function NotesIndex() {
           {notes.map((note) => (
             <li key={note.ID} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
               <Link href={`/${note.Slug}`} className="block">
-                <h2 className="text-xl font-semibold">{note.Title || 'Untitled'}</h2>
+                <h2 className="text-xl font-semibold">{note.Title || "Untitled"}</h2>
                 <p className="text-sm text-gray-500 mt-2">
                   Last updated: {note.UpdatedAt.toLocaleString()}
                 </p>

@@ -15,5 +15,5 @@ export default function SlugLoading() {
       </div>
       <div className="mt-6 h-4 bg-gray-200 rounded w-48"></div>
     </div>
-  );
+  )
 }
