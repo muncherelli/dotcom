@@ -41,7 +41,7 @@
   },
   "d1_databases": [
     {
-      "binding": "dotcom",
+      "binding": "DB",
       "database_name": "dotcom",
       "database_id": "175edc3d-1427-4345-bbba-8f4d517f0958"
     }
