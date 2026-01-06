@@ -42,8 +42,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "DOTCOM",
-      "database_id": "b18c7e48-39cf-4587-9df8-df36a3d45210"
+      "database_id": "b18c7e48-39cf-4587-9df8-df36a3d45210",
+      "database_name": "DOTCOM"
     }
   ],
   "kv_namespaces": [
@@ -54,8 +54,8 @@
   ],
   "r2_buckets": [
     {
-      "bucket_name": "dotcom",
-      "binding": "O"
+      "binding": "OBJECT",
+      "bucket_name": "dotcom"
     }
   ]
   /**
