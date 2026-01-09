@@ -42,20 +42,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_id": "b18c7e48-39cf-4587-9df8-df36a3d45210",
+      "database_id": "5a449259-f0a1-496d-8fd6-5bcb93f50e1e",
       "database_name": "DOTCOM"
-    }
-  ],
-  "kv_namespaces": [
-    {
-      "binding": "KV",
-      "id": "036160e2674f4f068a0f4f4a25c47f90"
-    }
-  ],
-  "r2_buckets": [
-    {
-      "binding": "OBJECT",
-      "bucket_name": "dotcom"
     }
   ]
   /**
