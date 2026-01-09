@@ -19,7 +19,7 @@ Complete technical documentation for the muncherelli.com project architecture, s
 
 ### Styling
 
-- **Tailwind CSS** - Utility-first CSS framework
+- **Tailwind CSS v4.x** - Utility-first CSS framework
 - **PostCSS** - CSS processing with Tailwind
 
 ### Development Tools
