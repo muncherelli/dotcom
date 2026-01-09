@@ -42,8 +42,9 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_id": "5a449259-f0a1-496d-8fd6-5bcb93f50e1e",
-      "database_name": "DOTCOM"
+      "database_name": "dotcom",
+      "database_id": "67ec2d8d-b035-4467-985b-aa8bc62e8741",
+      "remote": true
     }
   ]
   /**
