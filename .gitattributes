@@ -1,0 +1,13 @@
+* text=auto
+*.htm  text eol=crlf
+*.html text eol=crlf
+*.cfm  text eol=crlf
+*.cfc  text eol=crlf
+*.asp  text eol=crlf
+*.css  text eol=crlf
+*.js   text eol=crlf
+*.txt  text eol=crlf
+*.gif binary
+*.jpg binary
+*.png binary
+*.ico binary
