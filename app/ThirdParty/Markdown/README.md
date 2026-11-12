@@ -18,6 +18,21 @@ Copy this folder to `app/ThirdParty/Markdown` and list the file in
 <cfoutput>#markdown(text)#</cfoutput>
 ```
 
+Or, for Markdown written in a view, the custom tag. The indent its lines
+share is taken off, so it can sit indented in the HTML:
+
+```cfm
+<cfmodule template="#Request.viewToRoot#app/ThirdParty/Markdown/MarkdownTag.cfm">
+    ## Hello
+    Some **Markdown**.
+</cfmodule>
+
+<cfmodule template="#Request.viewToRoot#app/ThirdParty/Markdown/MarkdownTag.cfm" text="#body#">
+```
+
+(`Request.viewToRoot` is the framework's `../` path from the view being
+rendered up to the project root.)
+
 It covers the core of CommonMark, simplified:
 
 | Markdown | HTML |
