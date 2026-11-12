@@ -113,5 +113,9 @@
 <cfset storePage = pageCacheOn AND Request.cacheTTL GT 0 AND NOT Request.show404>
 </cfsilent><cfif storePage><cfinclude template="#Request.toRoot##Request.paths.systemDirectory#/Cache/PageCache.cfm"><cfheader name="X-Cache" value="MISS"></cfif><cfsilent>
 
+<!--- development: the debug window, just before </body> (not on error pages) --->
+<cfset addToolbar = Request.APP_DEBUG AND NOT StructKeyExists(Request, "exception") AND FindNoCase("</body>", output)>
+</cfsilent><cfif addToolbar><cfsavecontent variable="toolbar"><cfinclude template="#Request.toRoot##Request.paths.systemDirectory#/Debug/Toolbar.cfm"></cfsavecontent><cfset bodyAt = 0><cfset nextAt = FindNoCase("</body>", output)><cfloop condition="nextAt GT 0"><cfset bodyAt = nextAt><cfset nextAt = FindNoCase("</body>", output, bodyAt + 1)></cfloop><cfset output = Left(output, bodyAt - 1) & toolbar & Mid(output, bodyAt, Len(output))></cfif><cfsilent>
+
 <!--- drop the blank lines the included files left before this point --->
 </cfsilent><cfcontent type="text/html" reset="yes"><cfoutput>#output#</cfoutput>

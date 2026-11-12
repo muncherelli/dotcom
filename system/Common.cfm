@@ -99,5 +99,13 @@ function cachePage(seconds) {
     Request.cacheTTL = Val(seconds);
     return "";
 }
+/**
+ * client_ip(): the visitor's IP address. Caddy sends it as X-Real-IP (from
+ * Cloudflare's Cf-Connecting-Ip); REMOTE_ADDR is always Caddy itself.
+ */
+function client_ip() {
+    if (StructKeyExists(CGI, "HTTP_X_REAL_IP") AND Len(CGI.HTTP_X_REAL_IP)) return CGI.HTTP_X_REAL_IP;
+    return CGI.REMOTE_ADDR;
+}
 </cfscript>
 </cfsilent>

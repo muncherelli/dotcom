@@ -24,6 +24,7 @@
             Page rendered in #elapsed# ms &mdash;
             Environment: #esc(Request.ENVIRONMENT)# &mdash;
             ColdFusion #esc(ArrayToList(ListToArray(Server.ColdFusion.ProductVersion, ", "), "."))#
+            <br>Your IP address: #esc(client_ip())#
         </footer>
     </main>
 </cfoutput>
