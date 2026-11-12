@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# Static files go straight through
+RewriteRule ^assets/ - [L]
+
+# Redirect trailing slashes: /about/ -> /about
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} (.+)/$
+RewriteRule ^ %1 [L,R=301]
+
+# Anything that isn't a real file or folder goes to the front controller
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([\s\S]*)$ index.cfm/$1 [L,NC,QSA]

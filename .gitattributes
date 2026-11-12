@@ -11,3 +11,5 @@
 *.jpg binary
 *.png binary
 *.ico binary
+*.htaccess text eol=crlf
+env text eol=crlf

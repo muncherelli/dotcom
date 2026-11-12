@@ -1,3 +1,6 @@
 .DS_Store
 Thumbs.db
 *.swp
+.env
+writable/logs/*.log
+writable/cache/page-*.html

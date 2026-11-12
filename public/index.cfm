@@ -1,22 +1,51 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
-<HTML>
-<HEAD>
-<TITLE>muncherelli.com</TITLE>
-<META NAME="viewport" CONTENT="width=device-width, initial-scale=1">
-</HEAD>
-<BODY BGCOLOR="#C0C0C0" TEXT="#000000" LINK="#000080" VLINK="#800080">
-<CENTER>
-<TABLE WIDTH="90%" CELLPADDING="12" CELLSPACING="0" BORDER="2" BGCOLOR="#FFFFFF">
-<TR><TD BGCOLOR="#000080"><FONT FACE="Arial,Helvetica" COLOR="#FFFFFF"><B>muncherelli.com</B></FONT></TD></TR>
-<TR><TD>
-<FONT FACE="Arial,Helvetica">
-<H2>Under construction</H2>
-<P>This site is served by a real Windows NT 4.0 / IIS 4.0 box on <I>retronet</I>.</P>
-<P><FONT SIZE="-1">Best viewed in any browser, 640&times;480 or better.</FONT></P>
-<P><FONT SIZE="-1">Last updatered: November 11, 2026</FONT></P>
-</FONT>
-</TD></TR>
-</TABLE>
-</CENTER>
-</BODY>
-</HTML>
+<cfsilent>
+<cfset Request.startTick = GetTickCount()>
+<!---
+ *---------------------------------------------------------------
+ * CHECK COLDFUSION VERSION
+--->
+<cfset minCfVersion = "5.0">
+<cfscript>
+cfVersionParts = ListToArray(Server.ColdFusion.ProductVersion, ", .");
+cfVersion = ArrayToList(cfVersionParts, ".");
+minParts = ListToArray(minCfVersion, ".");
+cfTooOld = false;
+for (i = 1; i LTE ArrayLen(minParts); i = i + 1) {
+    have = 0;
+    if (i LTE ArrayLen(cfVersionParts)) have = Val(cfVersionParts[i]);
+    if (have NEQ Val(minParts[i])) {
+        cfTooOld = have LT Val(minParts[i]);
+        break;
+    }
+}
+</cfscript>
+</cfsilent><cfif cfTooOld><cfheader statuscode="503" statustext="Service Unavailable"><cfoutput>Your ColdFusion version must be #minCfVersion# or higher to run this site. Current version: #cfVersion#</cfoutput><cfabort></cfif><cfsilent>
+
+<!---
+ *---------------------------------------------------------------
+ * SET THE CURRENT DIRECTORY
+ *---------------------------------------------------------------
+ * ColdFusion has no working directory to change; it resolves includes
+ * from each file's own folder. FCPATH records where this file lives.
+--->
+<cfset Request.FCPATH = GetDirectoryFromPath(GetCurrentTemplatePath())>
+
+<!---
+ *---------------------------------------------------------------
+ * BOOTSTRAP THE APPLICATION
+ *----------------------------------------------------------------
+ * Loads the paths config, then the framework's boot file, which sets
+ * up the environment and runs the request.
+--->
+
+<!--- 
+ *---------------------------------------------------------------
+ * LOAD OUR PATHS CONFIG FILE
+ *---------------------------------------------------------------
+ * This is the line that might need to be changed, depending on your folder structure. 
+--->
+<cfinclude template="../app/Config/Paths.cfm">
+
+<!--- ^^^ Change this line if you move your application folder --->
+
+</cfsilent><cfinclude template="../#Request.paths.systemDirectory#/Boot.cfm">
