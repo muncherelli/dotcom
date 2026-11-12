@@ -1,0 +1,203 @@
+@@ atx headings
+# One
+### Three ###
+####### seven
+@@ html
+<h1>One</h1>
+<h3>Three</h3>
+<p>####### seven</p>
+@@ setext
+Title
+=====
+Sub
+---
+@@ html
+<h1>Title</h1>
+<h2>Sub</h2>
+@@ paragraphs and breaks
+one
+two  
+three\
+four
+
+five
+@@ html
+<p>one
+two<br>
+three<br>
+four</p>
+<p>five</p>
+@@ emphasis
+*a* _b_ **c** __d__ ***e*** snake_case_name 2 * 3 * 4
+**bold *it* bold**
+@@ html
+<p><em>a</em> <em>b</em> <strong>c</strong> <strong>d</strong> <strong><em>e</em></strong> snake_case_name 2 * 3 * 4
+<strong>bold <em>it</em> bold</strong></p>
+@@ code span
+use `a <b> *c*` and ``x ` y``
+@@ html
+<p>use <code>a &lt;b&gt; *c*</code> and <code>x ` y</code></p>
+@@ escapes and entities
+\*not em\* &copy; AT&T 1 < 2
+@@ html
+<p>*not em* &copy; AT&amp;T 1 &lt; 2</p>
+@@ links
+[home](/ "Home") and [ref][r] and [R] and <https://x.com/?a=1&b=2> and <me@x.com>
+
+[r]: https://example.com/a_b_c "Ex"
+@@ html
+<p><a href="/" title="Home">home</a> and <a href="https://example.com/a_b_c" title="Ex">ref</a> and <a href="https://example.com/a_b_c" title="Ex">R</a> and <a href="https://x.com/?a=1&amp;b=2">https://x.com/?a=1&amp;b=2</a> and <a href="mailto:me@x.com">me@x.com</a></p>
+@@ images
+![IIS *badge*](/assets/images/IISSide.gif "Powered") [![b](/i.gif)](/x)
+@@ html
+<p><img src="/assets/images/IISSide.gif" alt="IIS badge" title="Powered"> <a href="/x"><img src="/i.gif" alt="b"></a></p>
+@@ fenced code
+```cfm
+<cfset x = 1>
+
+*no*
+```
+~~~
+a
+~~~
+@@ html
+<pre><code class="language-cfm">&lt;cfset x = 1&gt;
+
+*no*
+</code></pre>
+<pre><code>a
+</code></pre>
+@@ indented code
+para
+
+    code <b>
+      more
+
+    end
+@@ html
+<p>para</p>
+<pre><code>code &lt;b&gt;
+  more
+
+end
+</code></pre>
+@@ hr
+---
+* * *
+@@ html
+<hr>
+<hr>
+@@ blockquote
+> # Q
+> quoted
+lazy
+> - item
+@@ html
+<blockquote>
+<h1>Q</h1>
+<p>quoted
+lazy</p>
+<ul>
+<li>item</li>
+</ul>
+</blockquote>
+@@ tight list nested
+- one
+- two
+  - sub *a*
+  - sub b
+- three
+@@ html
+<ul>
+<li>one</li>
+<li>two
+<ul>
+<li>sub <em>a</em></li>
+<li>sub b</li>
+</ul></li>
+<li>three</li>
+</ul>
+@@ loose ordered list
+3. first
+
+4. second
+   more
+@@ html
+<ol start="3">
+<li><p>first</p></li>
+<li><p>second
+more</p></li>
+</ol>
+@@ list types change
+- a
++ b
+1) c
+@@ html
+<ul>
+<li>a</li>
+</ul>
+<ul>
+<li>b</li>
+</ul>
+<ol>
+<li>c</li>
+</ol>
+@@ html block and inline html
+<div class="x">
+*raw*
+</div>
+
+text <span class="y">*em*</span> <!-- c -->
+@@ html
+<div class="x">
+*raw*
+</div>
+<p>text <span class="y"><em>em</em></span> <!-- c --></p>
+@@ paragraph then list
+para
+- item
+@@ html
+<p>para</p>
+<ul>
+<li>item</li>
+</ul>
+@@ empty angle brackets and a lone <
+a <> b < c
+@@ html
+<p>a &lt;&gt; b &lt; c</p>
+@@ trailing backslash
+end\
+@@ html
+<p>end\</p>
+@@ empty link target
+[x]() and [y]
+@@ html
+<p><a href="">x</a> and [y]</p>
+@@ unclosed fence
+```
+code
+@@ html
+<pre><code>code
+</code></pre>
+@@ markers stay in their paragraph
+a *b `c [d <e
+
+f* g` h] i>
+@@ html
+<p>a *b `c [d &lt;e</p>
+<p>f* g` h] i&gt;</p>
+@@ markers stay in their list item
+- *a
+- b*
+@@ html
+<ul>
+<li>*a</li>
+<li>b*</li>
+</ul>
+@@ heading then paragraph emphasis
+# T *x
+
+y* z
+@@ html
+<h1>T *x</h1>
+<p>y* z</p>

@@ -75,6 +75,14 @@
 
 <!---
  *---------------------------------------------------------------
+ * AUTOLOAD FILES
+ *---------------------------------------------------------------
+ * The files listed in app/Config/Autoload.cfm.
+--->
+</cfsilent><cfinclude template="#Request.toRoot##Request.paths.appDirectory#/Config/Autoload.cfm"><cfloop from="1" to="#ArrayLen(Request.autoload.files)#" index="autoloadIndex"><cfinclude template="#Request.toRoot##Request.autoload.files[autoloadIndex]#"></cfloop><cfsilent>
+
+<!---
+ *---------------------------------------------------------------
  * PAGE CACHE
  *---------------------------------------------------------------
  * A GET for a page that's in the cache and hasn't expired is sent
