@@ -69,16 +69,30 @@ function esc(data) {
     return out;
 }
 /**
- * view(name [, data]): the output of app/Views/<name>.cfm, with data's keys as
- * variables in it. Return it from a controller method; join views with &.
+ * view(name [, data [, cache]]): the output of app/Views/<name>.cfm, with
+ * data's keys as variables in it. Return it from a controller method; join
+ * views with &. cache: seconds to keep this view's output, or a struct with
+ * cache and cache_name (see app/Config/Cache.cfm).
  * (It stands in for the view until the method returns: CF 5 functions can't
  * include templates, so the framework renders it then.)
  */
 function view(name) {
     var v = StructNew();
+    var options = 0;
     v.name = name;
     v.data = StructNew();
+    v.cache = 0;
+    v.cacheName = name;
     if (ArrayLen(Arguments) GT 1) v.data = Arguments[2];
+    if (ArrayLen(Arguments) GT 2) {
+        options = Arguments[3];
+        if (IsNumeric(options)) {
+            v.cache = Val(options);
+        } else if (IsStruct(options)) {
+            if (StructKeyExists(options, "cache")) v.cache = Val(options.cache);
+            if (StructKeyExists(options, "cache_name")) v.cacheName = options.cache_name;
+        }
+    }
     ArrayAppend(Request.viewQueue, v);
     return Chr(1) & "view" & ArrayLen(Request.viewQueue) & Chr(2);
 }
@@ -93,7 +107,7 @@ function show404() {
 /**
  * cachePage(seconds): from a controller method, keep this page in the page
  * cache for that long (see app/Config/Cache.cfm). Does nothing when
- * Request.CACHE_PAGES is off.
+ * Request.CACHE_ENABLED is off.
  */
 function cachePage(seconds) {
     Request.cacheTTL = Val(seconds);
@@ -106,6 +120,16 @@ function cachePage(seconds) {
 function client_ip() {
     if (StructKeyExists(CGI, "HTTP_X_REAL_IP") AND Len(CGI.HTTP_X_REAL_IP)) return CGI.HTTP_X_REAL_IP;
     return CGI.REMOTE_ADDR;
+}
+/**
+ * fill_placeholders(text): {elapsed_time} and {client_ip} filled in. Boot runs
+ * it on every page as it's sent, cached or not.
+ */
+function fill_placeholders(text) {
+    var elapsed = NumberFormat((GetTickCount() - Request.startTick) / 1000, "0.0000");
+    text = Replace(text, "{elapsed_time}", elapsed, "ALL");
+    text = Replace(text, "{client_ip}", esc(client_ip()), "ALL");
+    return text;
 }
 </cfscript>
 </cfsilent>

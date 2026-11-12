@@ -1,4 +1,4 @@
-<cfset elapsed = GetTickCount() - Request.startTick><!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -21,10 +21,10 @@
            <code>Home::index</code> in <code>app/Controllers/Home.cfm</code>.</p>
         <p>Routes live in <code>app/Config/Routes.cfm</code>.</p>
         <footer>
-            Page rendered in #elapsed# ms &mdash;
+            Page rendered in {elapsed_time} seconds &mdash;
             Environment: #esc(Request.ENVIRONMENT)# &mdash;
             ColdFusion #esc(ArrayToList(ListToArray(Server.ColdFusion.ProductVersion, ", "), "."))#
-            <br>Your IP address: #esc(client_ip())#
+            <br>Your IP address: {client_ip}
         </footer>
     </main>
 </cfoutput>

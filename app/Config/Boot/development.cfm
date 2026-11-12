@@ -28,10 +28,10 @@
 <cfparam name="Request.APP_DEBUG" default="true">
 <!---
  |---------------------------------------------------------------
- | PAGE CACHE
+ | CACHE
  |---------------------------------------------------------------
- | Whether cachePage() keeps pages (see app/Config/Cache.cfm). Off here, so
+ | Whether cachePage() and view(..., seconds) keep anything (see app/Config/Cache.cfm). Off here, so
  | every change shows up on the next reload.
 --->
-<cfparam name="Request.CACHE_PAGES" default="false">
+<cfparam name="Request.CACHE_ENABLED" default="false">
 </cfsilent>

@@ -7,8 +7,16 @@
  | writable/cache; the next GET for the same address is sent from there
  | without running the routes, controller or views.
  |
- | Request.CACHE_PAGES (set in app/Config/Boot/<environment>.cfm) turns the
- | whole thing on or off; with it off, cachePage() does nothing.
+ | A single view can be cached too: view("sidebar", data, 60) keeps that view's
+ | output for 60 seconds (shared by every page that shows it). The third
+ | argument may also be a struct with cache (seconds) and cache_name (the
+ | cache key; the view's name by default).
+ |
+ | Placeholders filled in as the page is sent, even when it comes from the
+ | cache: {elapsed_time} (seconds the request took) and {client_ip}.
+ |
+ | Request.CACHE_ENABLED (set in app/Config/Boot/<environment>.cfm) turns both
+ | caches on or off; with it off, cachePage() and the view cache do nothing.
 --->
 
 <!---

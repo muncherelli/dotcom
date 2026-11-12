@@ -21,10 +21,10 @@
 <cfparam name="Request.APP_DEBUG" default="false">
 <!---
  |---------------------------------------------------------------
- | PAGE CACHE
+ | CACHE
  |---------------------------------------------------------------
- | Whether cachePage() keeps pages (see app/Config/Cache.cfm).
+ | Whether cachePage() and view(..., seconds) keep anything (see app/Config/Cache.cfm).
  | On in production.
 --->
-<cfparam name="Request.CACHE_PAGES" default="true">
+<cfparam name="Request.CACHE_ENABLED" default="true">
 </cfsilent>

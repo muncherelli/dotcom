@@ -81,8 +81,8 @@
  * from there, and nothing else runs.
 --->
 <cfset Request.cacheTTL = 0>
-<cfset pageCacheOn = Request.CACHE_PAGES AND ListFind("GET,HEAD", UCase(CGI.REQUEST_METHOD))>
-</cfsilent><cfif pageCacheOn><cfinclude template="#Request.toRoot##Request.paths.appDirectory#/Config/Cache.cfm"><cfset pageCacheStep = "serve"><cfinclude template="#Request.toRoot##Request.paths.systemDirectory#/Cache/PageCache.cfm"><cfif cacheHit><cfheader name="X-Cache" value="HIT"><cfcontent type="text/html" reset="yes"><cfoutput>#output#</cfoutput><cfabort></cfif></cfif><cfsilent>
+<cfset pageCacheOn = Request.CACHE_ENABLED AND ListFind("GET,HEAD", UCase(CGI.REQUEST_METHOD))>
+</cfsilent><cfif pageCacheOn><cfinclude template="#Request.toRoot##Request.paths.appDirectory#/Config/Cache.cfm"><cfset pageCacheStep = "serve"><cfinclude template="#Request.toRoot##Request.paths.systemDirectory#/Cache/PageCache.cfm"><cfif cacheHit><cfheader name="X-Cache" value="HIT"><cfcontent type="text/html" reset="yes"><cfoutput>#fill_placeholders(output)#</cfoutput><cfabort></cfif></cfif><cfsilent>
 
 <!---
  *---------------------------------------------------------------
@@ -118,4 +118,4 @@
 </cfsilent><cfif addToolbar><cfsavecontent variable="toolbar"><cfinclude template="#Request.toRoot##Request.paths.systemDirectory#/Debug/Toolbar.cfm"></cfsavecontent><cfset bodyAt = 0><cfset nextAt = FindNoCase("</body>", output)><cfloop condition="nextAt GT 0"><cfset bodyAt = nextAt><cfset nextAt = FindNoCase("</body>", output, bodyAt + 1)></cfloop><cfset output = Left(output, bodyAt - 1) & toolbar & Mid(output, bodyAt, Len(output))></cfif><cfsilent>
 
 <!--- drop the blank lines the included files left before this point --->
-</cfsilent><cfcontent type="text/html" reset="yes"><cfoutput>#output#</cfoutput>
+</cfsilent><cfcontent type="text/html" reset="yes"><cfoutput>#fill_placeholders(output)#</cfoutput>

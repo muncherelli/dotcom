@@ -4,3 +4,4 @@ Thumbs.db
 .env
 writable/logs/*.log
 writable/cache/page-*.html
+writable/cache/view-*.html
