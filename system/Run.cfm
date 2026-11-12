@@ -47,9 +47,6 @@
 <!--- 4. OUTPUT: a 404, or the result with its views rendered --->
 <cfif Request.show404>
     <cfheader statuscode="404" statustext="Not Found">
-    <cfset ArrayAppend(Request.viewQueue, StructNew())>
-    <cfset Request.viewQueue[1].name = "errors/html/error_404">
-    <cfset Request.viewQueue[1].data = StructNew()>
-    <cfset result = Chr(1) & "view1" & Chr(2)>
+    <cfset result = view("errors/html/error_404")>
 </cfif>
 </cfsilent><cfinclude template="#Request.toRoot##Request.paths.systemDirectory#/View/Render.cfm"><cfoutput>#result#</cfoutput>
