@@ -21,7 +21,7 @@
            <code>Home::index</code> in <code>app/Controllers/Home.cfm</code>.</p>
         <p>Routes live in <code>app/Config/Routes.cfm</code>.</p>
         <footer>
-            Page rendered in {elapsed_time} seconds &mdash;
+            Page rendered in {elapsed_ms} ms &mdash;
             Environment: #esc(Request.ENVIRONMENT)# &mdash;
             ColdFusion #esc(ArrayToList(ListToArray(Server.ColdFusion.ProductVersion, ", "), "."))#
             <br>Your IP address: {client_ip}

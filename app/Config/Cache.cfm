@@ -13,7 +13,8 @@
  | cache key; the view's name by default).
  |
  | Placeholders filled in as the page is sent, even when it comes from the
- | cache: {elapsed_time} (seconds the request took) and {client_ip}.
+ | cache: {elapsed_time} (seconds the request took), {elapsed_ms} (the same in
+ | milliseconds) and {client_ip}.
  |
  | Request.CACHE_ENABLED (set in app/Config/Boot/<environment>.cfm) turns both
  | caches on or off; with it off, cachePage() and the view cache do nothing.

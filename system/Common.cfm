@@ -122,12 +122,14 @@ function client_ip() {
     return CGI.REMOTE_ADDR;
 }
 /**
- * fill_placeholders(text): {elapsed_time} and {client_ip} filled in. Boot runs
+ * fill_placeholders(text): {elapsed_time} (seconds), {elapsed_ms} and {client_ip}
+ * filled in. Boot runs
  * it on every page as it's sent, cached or not.
  */
 function fill_placeholders(text) {
-    var elapsed = NumberFormat((GetTickCount() - Request.startTick) / 1000, "0.0000");
-    text = Replace(text, "{elapsed_time}", elapsed, "ALL");
+    var ms = GetTickCount() - Request.startTick;
+    text = Replace(text, "{elapsed_time}", NumberFormat(ms / 1000, "0.0000"), "ALL");
+    text = Replace(text, "{elapsed_ms}", ms, "ALL");
     text = Replace(text, "{client_ip}", esc(client_ip()), "ALL");
     return text;
 }
