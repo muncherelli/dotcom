@@ -123,8 +123,7 @@ function client_ip() {
 }
 /**
  * fill_placeholders(text): {elapsed_time} (seconds), {elapsed_ms} and {client_ip}
- * filled in. Boot runs
- * it on every page as it's sent, cached or not.
+ * filled in. Boot runs it on every page as it's sent, cached or not.
  */
 function fill_placeholders(text) {
     var ms = GetTickCount() - Request.startTick;
