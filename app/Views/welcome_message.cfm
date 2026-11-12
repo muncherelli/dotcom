@@ -25,6 +25,7 @@
             Environment: #esc(Request.ENVIRONMENT)# &mdash;
             ColdFusion #esc(ArrayToList(ListToArray(Server.ColdFusion.ProductVersion, ", "), "."))#
             <br>Your IP address: {client_ip}
+            <p><img src="/assets/images/IISSide.gif" width="100" height="31" alt="Powered by Microsoft Internet Information Server"></p>
         </footer>
     </main>
 </cfoutput>
