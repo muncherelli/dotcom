@@ -9,7 +9,7 @@
 --->
 <cfset nowSeconds = DateDiff("s", CreateDateTime(1970, 1, 1, 0, 0, 0), Now())>
 <cfset cacheKey = LCase(CGI.HTTP_HOST) & CGI.PATH_INFO>
-<cfif Request.cacheQueryString><cfset cacheKey = cacheKey & "?" & CGI.QUERY_STRING></cfif>
+<cfif Request.cache.cacheQueryString><cfset cacheKey = cacheKey & "?" & CGI.QUERY_STRING></cfif>
 <cfset cacheFile = Request.WRITEPATH & "cache\page-" & LCase(Hash(cacheKey)) & ".html">
 <cfset cacheHit = false>
 
@@ -43,7 +43,7 @@
     </cftry>
 </cfif>
 
-<cfif (cacheHit OR pageCacheStep EQ "store") AND Request.cacheSendHeaders>
+<cfif (cacheHit OR pageCacheStep EQ "store") AND Request.cache.sendHeaders>
     <cfheader name="Cache-Control" value="public, max-age=#cacheSecondsLeft#">
 </cfif>
 </cfsilent>

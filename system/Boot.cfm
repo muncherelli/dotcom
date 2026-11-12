@@ -78,11 +78,15 @@
  * PAGE CACHE
  *---------------------------------------------------------------
  * A GET for a page that's in the cache and hasn't expired is sent
- * from there, and nothing else runs.
+ * from there: the request itself doesn't run.
 --->
 <cfset Request.cacheTTL = 0>
-<cfset pageCacheOn = Request.CACHE_ENABLED AND ListFind("GET,HEAD", UCase(CGI.REQUEST_METHOD))>
-</cfsilent><cfif pageCacheOn><cfinclude template="#Request.toRoot##Request.paths.appDirectory#/Config/Cache.cfm"><cfset pageCacheStep = "serve"><cfinclude template="#Request.toRoot##Request.paths.systemDirectory#/Cache/PageCache.cfm"><cfif cacheHit><cfheader name="X-Cache" value="HIT"><cfcontent type="text/html" reset="yes"><cfoutput>#fill_placeholders(output)#</cfoutput><cfabort></cfif></cfif><cfsilent>
+</cfsilent><cfinclude template="#Request.toRoot##Request.paths.appDirectory#/Config/Cache.cfm"><cfsilent>
+<cfset Request.cacheOn = Request.cache.handler EQ "file">
+<cfset pageCacheOn = Request.cacheOn AND ListFind("GET,HEAD", UCase(CGI.REQUEST_METHOD))>
+<cfset cacheHit = false>
+</cfsilent><cfif pageCacheOn><cfset pageCacheStep = "serve"><cfinclude template="#Request.toRoot##Request.paths.systemDirectory#/Cache/PageCache.cfm"><cfif cacheHit><cfheader name="X-Cache" value="HIT"></cfif></cfif><cfsilent>
+<cfset Request.fromPageCache = cacheHit>
 
 <!---
  *---------------------------------------------------------------
@@ -92,7 +96,7 @@
  * halfway through shows only the error page.
 --->
 <cftry>
-    <cfsavecontent variable="output"><cfinclude template="#Request.toRoot##Request.paths.systemDirectory#/Run.cfm"></cfsavecontent>
+    <cfif NOT cacheHit><cfsavecontent variable="output"><cfinclude template="#Request.toRoot##Request.paths.systemDirectory#/Run.cfm"></cfsavecontent></cfif>
     <cfcatch type="Any">
         <cfset Request.cacheTTL = 0>
         <cfset Request.exception = StructNew()>
@@ -110,7 +114,7 @@
 <cfset output = Trim(output)>
 <cfparam name="Request.show404" default="false">
 <cfset pageCacheStep = "store">
-<cfset storePage = pageCacheOn AND Request.cacheTTL GT 0 AND NOT Request.show404>
+<cfset storePage = pageCacheOn AND NOT cacheHit AND Request.cacheTTL GT 0 AND NOT Request.show404>
 </cfsilent><cfif storePage><cfinclude template="#Request.toRoot##Request.paths.systemDirectory#/Cache/PageCache.cfm"><cfheader name="X-Cache" value="MISS"></cfif><cfsilent>
 
 <!--- development: the debug window, just before </body> (not on error pages) --->

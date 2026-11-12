@@ -26,12 +26,4 @@
  | A flag the app and framework can check to turn on extra checks and output.
 --->
 <cfparam name="Request.APP_DEBUG" default="true">
-<!---
- |---------------------------------------------------------------
- | CACHE
- |---------------------------------------------------------------
- | Whether cachePage() and view(..., seconds) keep anything (see app/Config/Cache.cfm). Off here, so
- | every change shows up on the next reload.
---->
-<cfparam name="Request.CACHE_ENABLED" default="false">
 </cfsilent>

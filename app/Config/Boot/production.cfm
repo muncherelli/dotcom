@@ -19,12 +19,4 @@
  | DEBUG MODE
 --->
 <cfparam name="Request.APP_DEBUG" default="false">
-<!---
- |---------------------------------------------------------------
- | CACHE
- |---------------------------------------------------------------
- | Whether cachePage() and view(..., seconds) keep anything (see app/Config/Cache.cfm).
- | On in production.
---->
-<cfparam name="Request.CACHE_ENABLED" default="true">
 </cfsilent>

@@ -24,7 +24,9 @@ function tb_rows(s) {
 }
 </cfscript>
 <!--- the Request section keeps its own order and names (struct keys come out sorted, in capitals) --->
-<cfif Request.route.found>
+<cfif Request.fromPageCache>
+    <cfset tbRoute = "(sent from the page cache; no route ran)">
+<cfelseif Request.route.found>
     <cfset tbRoute = "/" & Request.route.from & "  ->  " & Request.route.controller & "::" & Request.route.method & "(" & ArrayToList(Request.route.params, ", ") & ")">
 <cfelse>
     <cfset tbRoute = "(no route matched)">
@@ -33,7 +35,7 @@ function tb_rows(s) {
 <cfset tbRequestRows = "">
 <cfset tbPairs = ArrayNew(1)>
 <cfset ArrayAppend(tbPairs, "Method|" & CGI.REQUEST_METHOD)>
-<cfset ArrayAppend(tbPairs, "Path|/" & Request.uri)>
+<cfset ArrayAppend(tbPairs, "Path|" & CGI.PATH_INFO)>
 <cfset ArrayAppend(tbPairs, "Route|" & tbRoute)>
 <cfset ArrayAppend(tbPairs, "Client IP|" & client_ip())>
 <cfset ArrayAppend(tbPairs, "REMOTE_ADDR|" & CGI.REMOTE_ADDR)>

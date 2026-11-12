@@ -24,7 +24,7 @@
     </cfif>
 
     <!--- the view cache: use a stored copy that hasn't expired --->
-    <cfset viewCacheOn = Request.CACHE_ENABLED AND theView.cache GT 0>
+    <cfset viewCacheOn = Request.cacheOn AND theView.cache GT 0>
     <cfset viewFromCache = false>
     <cfif viewCacheOn>
         <cfset viewCacheFile = Request.WRITEPATH & "cache\view-" & LCase(Hash(theView.cacheName)) & ".html">

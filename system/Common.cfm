@@ -106,8 +106,8 @@ function show404() {
 }
 /**
  * cachePage(seconds): from a controller method, keep this page in the page
- * cache for that long (see app/Config/Cache.cfm). Does nothing when
- * Request.CACHE_ENABLED is off.
+ * cache for that long (see app/Config/Cache.cfm). Does nothing when the
+ * cache handler is "dummy".
  */
 function cachePage(seconds) {
     Request.cacheTTL = Val(seconds);
@@ -131,6 +131,21 @@ function fill_placeholders(text) {
     text = Replace(text, "{elapsed_ms}", ms, "ALL");
     text = Replace(text, "{client_ip}", esc(client_ip()), "ALL");
     return text;
+}
+/**
+ * config_from_env(config, prefix): each setting in the config struct that .env
+ * sets as <prefix>.<name> takes that value ("true"/"false" become booleans),
+ * the way CodeIgniter's Config classes read .env.
+ */
+function config_from_env(config, prefix) {
+    var keys = StructKeyList(config);
+    var i = 0;
+    var name = "";
+    for (i = 1; i LTE ListLen(keys); i = i + 1) {
+        name = prefix & "." & ListGetAt(keys, i);
+        if (StructKeyExists(Request.env, name)) config[ListGetAt(keys, i)] = env(name);
+    }
+    return config;
 }
 </cfscript>
 </cfsilent>
